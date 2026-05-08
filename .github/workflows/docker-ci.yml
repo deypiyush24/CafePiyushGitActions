@@ -1,0 +1,27 @@
+name: Docker CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: docker build -t cafe-website .
+
+      - name: Run Docker Container
+        run: |
+          docker run -d -p 8080:8080 --name CafePiyush cafe-website
+
+      - name: Verify Application
+        run: |
+          sleep 15
+          curl http://localhost:8080
